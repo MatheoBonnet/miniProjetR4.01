@@ -38,19 +38,19 @@ client.connect()
   });
 
 // Routes
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // Route de test
 app.get('/', (req, res) => {
   res.json({
     message: '🎓 OAuth + JWT Demo - Backend Express + MongoDB',
     endpoints: {
-      'POST /auth/register': 'Créer un compte (email/password)',
-      'POST /auth/login': 'Se connecter (email/password)',
-      'GET /auth/google': 'Se connecter avec Google',
-      'GET /auth/google/callback': 'Callback Google OAuth',
-      'GET /auth/profile': 'Profil (protégé par JWT)',
-      'GET /auth/users': 'Liste utilisateurs (debug)'
+      'POST /api/auth/register': 'Créer un compte (email/password)',
+      'POST /api/auth/login': 'Se connecter (email/password)',
+      'GET /api/auth/google': 'Se connecter avec Google',
+      'GET /api/auth/google/callback': 'Callback Google OAuth',
+      'GET /api/auth/profile': 'Profil (protégé par JWT)',
+      'GET /api/auth/users': 'Liste utilisateurs (debug)'
     },
     database: 'MongoDB Native Driver',
     authentication: 'JWT stateless + Google OAuth 2.0',

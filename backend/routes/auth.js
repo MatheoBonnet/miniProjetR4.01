@@ -184,6 +184,31 @@ router.get('/users', async (req, res) => {
 // =============================================================================
 
 // TODO 2: Votre code ici
+// Route d'initiation de l'authentification Google
+router.get('/google', passport.authenticate('google', {
+  scope: ['profile', 'email'],
+  session: false
+}));
+
+// Route de callback Google
+router.get('/google/callback', 
+  passport.authenticate('google', { 
+    session: false, 
+    failureRedirect: `${process.env.FRONTEND_URL}/login?error=auth_failed` 
+  }),
+  (req, res) => {
+    try {
+      // Générer un JWT pour l'utilisateur authentifié
+      const token = generateToken(req.user._id);
+      
+      // Rediriger vers le frontend avec le token
+      res.redirect(`${process.env.FRONTEND_URL}/auth/callback?token=${token}`);
+    } catch (error) {
+      console.error('Erreur génération token:', error);
+      res.redirect(`${process.env.FRONTEND_URL}/login?error=token_generation_failed`);
+    }
+  }
+);
 
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const { findUserById } = require('../models/User');
 
 // Middleware pour vérifier le JWT
 const authenticateToken = async (req, res, next) => {
@@ -19,7 +19,8 @@ const authenticateToken = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Récupérer l'utilisateur depuis MongoDB (sans le password)
-    const user = await User.findById(decoded.userId).select('-password');
+    const db = req.app.locals.db;
+    const user = await findUserById(db, decoded.userId);
 
     if (!user) {
       return res.status(404).json({
@@ -28,8 +29,11 @@ const authenticateToken = async (req, res, next) => {
       });
     }
 
+    // Supprimer le password de l'objet user avant de l'ajouter à req
+    const { password, ...userWithoutPassword } = user;
+
     // Ajouter l'utilisateur à la requête
-    req.user = user;
+    req.user = userWithoutPassword;
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
