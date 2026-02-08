@@ -75,11 +75,65 @@ async function createUserFromGoogle(db, { googleId, email, name, picture }) {
   };
 }
 
+async function findUserByGithubId(db, githubId) {
+  return await db.collection('users').findOne({ githubId });
+}
+
+async function createUserFromGithub(db, { githubId, email, name, picture }) {
+  const result = await db.collection('users').insertOne({
+    githubId,
+    email: email ? email.toLowerCase() : null,
+    name,
+    picture,
+    provider: 'github',
+    createdAt: new Date()
+  });
+
+  return {
+    _id: result.insertedId,
+    githubId,
+    email: email ? email.toLowerCase() : null,
+    name,
+    picture,
+    provider: 'github',
+    createdAt: new Date()
+  };
+}
+
+async function findUserByDiscordId(db, discordId) {
+  return await db.collection('users').findOne({ discordId });
+}
+
+async function createUserFromDiscord(db, { discordId, email, name, picture }) {
+  const result = await db.collection('users').insertOne({
+    discordId,
+    email: email ? email.toLowerCase() : null,
+    name,
+    picture,
+    provider: 'discord',
+    createdAt: new Date()
+  });
+
+  return {
+    _id: result.insertedId,
+    discordId,
+    email: email ? email.toLowerCase() : null,
+    name,
+    picture,
+    provider: 'discord',
+    createdAt: new Date()
+  };
+}
+
 module.exports = {
   findUserByEmail,
   findUserById,
   createUser,
   comparePassword,
   findUserByGoogleId,
-  createUserFromGoogle
+  createUserFromGoogle,
+  findUserByGithubId,
+  createUserFromGithub,
+  findUserByDiscordId,
+  createUserFromDiscord
 };

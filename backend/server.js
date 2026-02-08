@@ -49,6 +49,10 @@ app.get('/', (req, res) => {
       'POST /api/auth/login': 'Se connecter (email/password)',
       'GET /api/auth/google': 'Se connecter avec Google',
       'GET /api/auth/google/callback': 'Callback Google OAuth',
+      'GET /api/auth/github': 'Se connecter avec GitHub',
+      'GET /api/auth/github/callback': 'Callback GitHub OAuth',
+      'GET /api/auth/discord': 'Se connecter avec Discord',
+      'GET /api/auth/discord/callback': 'Callback Discord OAuth',
       'GET /api/auth/profile': 'Profil (protégé par JWT)',
       'GET /api/auth/users': 'Liste utilisateurs (debug)'
     },
